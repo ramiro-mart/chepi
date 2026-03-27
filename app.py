@@ -348,12 +348,12 @@ HTML_PAGE = """<!DOCTYPE html>
         .file-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: #f9fafb; border-radius: 6px; margin-bottom: 4px; font-size: 13px; }
         .file-item .remove { color: #e53e3e; cursor: pointer; font-weight: bold; padding: 2px 6px; }
         textarea { width: 100%; min-height: 120px; border: 1px solid #d0d5dd; border-radius: 8px; padding: 12px; font-family: inherit; font-size: 14px; resize: vertical; }
-        textarea:focus { outline: none; border-color: #FF3553; box-shadow: 0 0 0 3px rgba(68,114,196,0.1); }
+        textarea:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
         select { width: 100%; padding: 10px 12px; border: 1px solid #d0d5dd; border-radius: 8px; font-size: 14px; background: #fff; }
-        select:focus { outline: none; border-color: #FF3553; }
-        .btn { width: 100%; padding: 14px; background: #FF3553; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-        .btn:hover { background: #e02040; }
-        .btn:disabled { background: #ff8a9a; cursor: not-allowed; }
+        select:focus { outline: none; border-color: #2563eb; }
+        .btn { width: 100%; padding: 14px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .btn:hover { background: #1d4ed8; }
+        .btn:disabled { background: #93b4f6; cursor: not-allowed; }
         .result { display: none; }
         .result.show { display: block; }
         .result-success { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; }
@@ -362,7 +362,7 @@ HTML_PAGE = """<!DOCTYPE html>
         .download-btn:hover { background: #15803d; }
         .spinner { display: none; text-align: center; padding: 24px; }
         .spinner.show { display: block; }
-        .spinner .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #FF3553; margin: 0 4px; animation: bounce 1.4s infinite ease-in-out both; }
+        .spinner .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #2563eb; margin: 0 4px; animation: bounce 1.4s infinite ease-in-out both; }
         .spinner .dot:nth-child(1) { animation-delay: -0.32s; }
         .spinner .dot:nth-child(2) { animation-delay: -0.16s; }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
