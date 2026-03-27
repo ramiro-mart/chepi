@@ -364,7 +364,7 @@ HTML_PAGE = """<!DOCTYPE html>
 <body>
     <div class="container">
         <div class="header">
-            <img src="/static/chepi-avatar.png" alt="Chepi" style="width: 120px; height: 120px; margin-bottom: 12px; border-radius: 50%; object-fit: cover;">
+            <img src="/static/Gemini_Generated_Image_qmcft7qmcft7qmcf.png" alt="Chepi" style="width: 200px; height: 200px; margin-bottom: 12px; object-fit: contain;">
             <h1>Chepi</h1>
             <p>Subí archivos o pegá texto para generar el Excel de carga masiva</p>
         </div>
