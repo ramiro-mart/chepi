@@ -18,7 +18,9 @@ from fastapi.staticfiles import StaticFiles
 load_dotenv(override=True)
 
 app = FastAPI(title="OrderEAT Product Upload Agent")
-app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
+static_dir = Path(__file__).parent / "static"
+static_dir.mkdir(exist_ok=True)
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 UPLOAD_DIR = Path(tempfile.gettempdir()) / "ordereat_uploads"
 OUTPUT_DIR = Path(tempfile.gettempdir()) / "ordereat_outputs"
