@@ -201,7 +201,7 @@ CONTENIDO A PROCESAR:
 {text}"""
 
     response = client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-opus-4-20250514",
         max_tokens=8192,
         system=SYSTEM_PROMPT,
         messages=[{"role": "user", "content": user_message}],
