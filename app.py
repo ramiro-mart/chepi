@@ -18,6 +18,7 @@ from fastapi.staticfiles import StaticFiles
 load_dotenv(override=True)
 
 app = FastAPI(title="OrderEAT Product Upload Agent")
+app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
 
 UPLOAD_DIR = Path(tempfile.gettempdir()) / "ordereat_uploads"
 OUTPUT_DIR = Path(tempfile.gettempdir()) / "ordereat_outputs"
@@ -361,6 +362,7 @@ HTML_PAGE = """<!DOCTYPE html>
 <body>
     <div class="container">
         <div class="header">
+            <img src="/static/chepi-avatar.png" alt="Chepi" style="width: 120px; height: 120px; margin-bottom: 12px; border-radius: 50%; object-fit: cover;">
             <h1>Chepi</h1>
             <p>Subí archivos o pegá texto para generar el Excel de carga masiva</p>
         </div>
