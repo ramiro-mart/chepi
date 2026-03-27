@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/ramiromartinez/Library/Application Support/Claude/local-agent-mode-sessions/skills-plugin/7d418e5e-8730-48da-996a-9fd44b9a2c47/666d7a33-7cf3-4d8f-951d-eae17ad3ade7/skills/xlsx/**)",
+      "Bash(python3 -c \":*)",
+      "Bash(pip3 install:*)",
+      "Read(//Users/ramiromartinez/Downloads/**)",
+      "Bash(unzip -l \"WhatsApp Chat - Chepis OrderEAT 2026.zip\")",
+      "Bash(unzip -p \"WhatsApp Chat - Chepis OrderEAT 2026.zip\" \"_chat.txt\")",
+      "Bash(python3 -m venv venv)",
+      "Bash(source venv/bin/activate)",
+      "Bash(pip install:*)",
+      "Bash(python3 -c \"from app import extract_text_from_pdf, extract_text_from_excel, generate_excel; print\\(''Imports OK''\\)\")",
+      "Bash(timeout 5 python3 -c \":*)",
+      "Bash(python -c \":*)",
+      "Bash(xxd \"/Users/ramiromartinez/Documents/Product Upload Agent/.env\")",
+      "Bash(curl -s http://localhost:8000/)",
+      "Bash(curl -s -X POST http://localhost:8000/process -F 'text=Todo a categoría Snacks:*)",
+      "Bash(kill 71348)",
+      "Bash(tesseract --version)",
+      "Bash(brew install:*)"
+    ]
+  }
+}
