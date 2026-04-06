@@ -34,37 +34,53 @@ Tu tarea es tomar texto desordenado (menús, listas de productos, chats de Whats
 y extraer una lista estructurada de productos.
 
 REGLAS:
-1. Cada producto debe tener: título, descripción (opcional), categoría (si se puede inferir), precio (numérico, sin símbolos).
+
+1. Cada producto debe tener: título, descripción, categoría, precio y fechas disponibles.
+
 2. TÍTULO: Nombre limpio y claro del producto. Primera letra en mayúscula. Sin símbolos raros.
-   - Normalizar nombres: "Coca Cola 600ml" no "coca 600" ni "COCA COLA 600ML".
+   - Normalizar nombres: "Coca Cola 600ml" → correcto. "coca 600", "COCA COLA 600ML" → incorrecto.
    - Si es un menú del día, incluir el día: "Menú Lunes - Milanesa con puré".
-3. DESCRIPCIÓN: Solo si hay info adicional relevante (ingredientes, incluye postre, etc.). Si no hay, dejar vacío.
-4. CATEGORÍA: Inferir solo cuando sea obvio:
-   - Bebidas: agua, gaseosas, jugos, café, té, leche
-   - Snacks: galletas, papas, alfajores, golosinas, cereales, frutos secos
-   - Menú del día: platos del día, menús semanales
-   - Comidas: hamburguesas, sandwiches, milanesas, pizzas, empanadas
-   - Postres: helados, tortas, frutas
-   - Si no está claro, dejar vacío.
-5. PRECIO: Solo el número. Sin "$", "UYU", "$U", "CLP", etc. Si no hay precio, poner "REVISAR".
-6. FECHAS DISPONIBLES: Si se menciona una fecha específica para el producto (ej: "lunes 3 de marzo"), ponerla en formato DD/MM/AAAA. Si no hay fecha, dejar vacío.
+
+3. DESCRIPCIÓN: Obligatoria siempre.
+   - Si hay información adicional relevante (ingredientes, guarnición, incluye postre, tamaño, etc.), incluirla.
+   - Si NO hay información adicional, colocar "-".
+
+4. CATEGORÍA:
+   Primero verificar si el texto de entrada ya define categorías o secciones (por ejemplo: encabezados como "Bebidas", "Platos del día", agrupaciones explícitas, etc.). Si las categorías ya están definidas en el archivo, respetar esas categorías tal cual aparecen.
+
+   Solo si NO hay categorías definidas en el texto de entrada, inferir usando estas cuatro categorías:
+   - "Menú": Productos que tienen una fecha específica asociada (menú del día, menú semanal con fechas).
+   - "Comidas": Platos de almuerzo (hamburguesas, milanesas, pizzas, empanadas, sandwiches, ensaladas, etc.).
+   - "Snacks": Productos chicos o de merienda/receso (galletas, alfajores, papas fritas, cereales, frutos secos, golosinas, barras de cereal, etc.).
+   - "Bebidas": Cualquier bebida (agua, gaseosas, jugos, café, té, leche, etc.).
+
+   Si no es posible determinar la categoría ni del texto ni por inferencia, dejar vacío.
+
+5. PRECIO: Solo el número, sin símbolos de moneda ("$", "UYU", "$U", "CLP", etc.).
+   - Si no hay precio, poner "REVISAR".
+
+6. FECHAS DISPONIBLES: Si se menciona una fecha específica para el producto (ej: "lunes 3 de marzo"), ponerla en formato DD/MM/AAAA.
+   - Si no hay fecha, dejar vacío.
+
 7. Ignorar: saludos, comentarios, conversaciones, emojis, texto no relacionado con productos.
+
 8. Evitar duplicados exactos (mismo nombre y precio).
+
 9. Si hay varios precios para el mismo producto (ej: por tamaño), crear una fila por cada variante.
 
 FORMATO DE RESPUESTA:
 Devuelve ÚNICAMENTE un JSON array. Cada elemento tiene estas keys exactas:
 - "titulo": string
-- "descripcion": string (vacío si no aplica)
-- "categoria": string (vacío si no se puede inferir)
+- "descripcion": string ("-" si no hay info adicional)
+- "categoria": string (vacío si no se puede determinar)
 - "precio": string (número o "REVISAR")
 - "fechas_disponibles": string (vacío si no aplica)
 
 Ejemplo:
 [
-  {"titulo": "Hamburguesa Simple", "descripcion": "", "categoria": "Comidas", "precio": "250", "fechas_disponibles": ""},
-  {"titulo": "Coca Cola 600ml", "descripcion": "", "categoria": "Bebidas", "precio": "150", "fechas_disponibles": ""},
-  {"titulo": "Menú Lunes - Milanesa con Puré", "descripcion": "Incluye postre: fruta de estación", "categoria": "Menú del día", "precio": "4300", "fechas_disponibles": "03/03/2026"}
+  {"titulo": "Hamburguesa Simple", "descripcion": "-", "categoria": "Comidas", "precio": "250", "fechas_disponibles": ""},
+  {"titulo": "Coca Cola 600ml", "descripcion": "-", "categoria": "Bebidas", "precio": "150", "fechas_disponibles": ""},
+  {"titulo": "Menú Lunes - Milanesa con Puré", "descripcion": "Incluye postre: fruta de estación", "categoria": "Menú", "precio": "4300", "fechas_disponibles": "03/03/2026"}
 ]
 
 NO incluyas explicaciones, solo el JSON array."""
