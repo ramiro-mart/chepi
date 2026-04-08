@@ -1,9 +1,7 @@
-import os
 import json
 import uuid
 import tempfile
 from pathlib import Path
-from typing import Optional
 
 import anthropic
 import openpyxl
@@ -209,12 +207,12 @@ def generate_excel(products: list[dict], output_path: str):
     wb.save(output_path)
 
 
-def call_claude(text: str, business_type: str = "") -> list[dict]:
+def call_claude(text: str, indicaciones: str = "") -> list[dict]:
     client = anthropic.Anthropic()
 
     user_message = f"""Procesá el siguiente contenido y extraé todos los productos con sus precios.
 
-{f'Tipo de comercio: {business_type}' if business_type else ''}
+{f'Indicaciones adicionales: {indicaciones}' if indicaciones else ''}
 
 CONTENIDO A PROCESAR:
 {text}"""
@@ -251,7 +249,7 @@ CONTENIDO A PROCESAR:
 async def process_products(
     files: list[UploadFile] = File(default=[]),
     text: str = Form(default=""),
-    business_type: str = Form(default=""),
+    indicaciones: str = Form(default=""),
 ):
     all_text_parts = []
 
@@ -284,7 +282,7 @@ async def process_products(
         combined_text = combined_text[:80000] + "\n[... contenido truncado ...]"
 
     try:
-        products = call_claude(combined_text, business_type)
+        products = call_claude(combined_text, indicaciones)
     except json.JSONDecodeError as e:
         return {"error": f"Error al parsear la respuesta del modelo. Intentá de nuevo. Detalle: {str(e)}"}
     except anthropic.APIError as e:
@@ -349,8 +347,6 @@ HTML_PAGE = """<!DOCTYPE html>
         .file-item .remove { color: #e53e3e; cursor: pointer; font-weight: bold; padding: 2px 6px; }
         textarea { width: 100%; min-height: 120px; border: 1px solid #d0d5dd; border-radius: 8px; padding: 12px; font-family: inherit; font-size: 14px; resize: vertical; }
         textarea:focus { outline: none; border-color: #FF3553; box-shadow: 0 0 0 3px rgba(68,114,196,0.1); }
-        select { width: 100%; padding: 10px 12px; border: 1px solid #d0d5dd; border-radius: 8px; font-size: 14px; background: #fff; }
-        select:focus { outline: none; border-color: #FF3553; }
         .btn { width: 100%; padding: 14px; background: #FF3553; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
         .btn:hover { background: #e02040; }
         .btn:disabled { background: #ff8a9a; cursor: not-allowed; }
@@ -386,17 +382,23 @@ HTML_PAGE = """<!DOCTYPE html>
         </div>
 
         <div class="card">
-            <h2>Archivos del cliente</h2>
+            <h2>Indicaciones</h2>
+            <textarea id="indicacionesInput" placeholder="Aclaraciones para casos borde (opcional). Ej: los precios están sin IVA, ignorar los combos del lunes, moneda en pesos uruguayos..." style="min-height: 80px;"></textarea>
+        </div>
+
+        <div class="card">
+            <h2>Información del cliente</h2>
             <div class="file-upload" id="dropZone">
                 <input type="file" id="fileInput" multiple accept=".pdf,.xlsx,.xls,.csv,.txt">
                 <div class="icon">📄</div>
                 <p>Arrastrá archivos o hacé clic para subir<br><small>PDF, Excel, CSV, TXT</small></p>
             </div>
             <div class="file-list" id="fileList"></div>
-        </div>
-
-        <div class="card">
-            <h2>Texto libre</h2>
+            <div style="display: flex; align-items: center; gap: 12px; margin: 16px 0 12px;">
+                <div style="flex: 1; height: 1px; background: #e5e7eb;"></div>
+                <span style="color: #999; font-size: 13px;">o</span>
+                <div style="flex: 1; height: 1px; background: #e5e7eb;"></div>
+            </div>
             <textarea id="textInput" placeholder="Pegá acá el texto del cliente: mensajes de WhatsApp, listas de productos, mails, etc."></textarea>
         </div>
 
@@ -449,6 +451,7 @@ HTML_PAGE = """<!DOCTYPE html>
 
         async function processProducts() {
             const text = document.getElementById('textInput').value;
+            const indicaciones = document.getElementById('indicacionesInput').value;
 
             if (selectedFiles.length === 0 && !text.trim()) {
                 alert('Subí al menos un archivo o pegá texto para procesar.');
@@ -460,6 +463,7 @@ HTML_PAGE = """<!DOCTYPE html>
                 formData.append('files', file);
             }
             formData.append('text', text);
+            formData.append('indicaciones', indicaciones);
 
             document.getElementById('processBtn').disabled = true;
             document.getElementById('spinner').classList.add('show');
